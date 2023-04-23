@@ -6,6 +6,7 @@ import com.jwt.jwt.model.request.InsertRequest;
 import com.jwt.jwt.model.request.UpdateRequest;
 import com.jwt.jwt.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/auth/admin")
 @RequiredArgsConstructor
+@CrossOrigin("http://localhost:5173/")
 public class AdminController {
 
     private final UserService userService;
@@ -38,7 +40,20 @@ public class AdminController {
             return ResponseEntity.ok(map);
         } else {
             map.put("message", "Delete fail.");
-            return ResponseEntity.badRequest().body(map);
+            return ResponseEntity.status(HttpStatusCode.valueOf(404)).body(map);
+        }
+    }
+
+    @GetMapping("/update/{user_id}")
+    public ResponseEntity<Map> updatePage(@PathVariable("user_id") Long id){
+        HashMap<String, UserDTO> map = new HashMap<>();
+        User user = userService.getUserById(id);
+        if (user != null) {
+            map.put("user", new UserDTO().toUserDTO(user));
+            return ResponseEntity.ok(map);
+        } else {
+            map.put("user", null);
+            return ResponseEntity.status(HttpStatusCode.valueOf(404)).body(map);
         }
     }
 
@@ -50,7 +65,7 @@ public class AdminController {
             return ResponseEntity.ok(map);
         } else {
             map.put("message", "Insert fail.");
-            return ResponseEntity.badRequest().body(map);
+            return ResponseEntity.status(HttpStatusCode.valueOf(404)).body(map);
         }
     }
 
@@ -62,7 +77,7 @@ public class AdminController {
             return ResponseEntity.ok(map);
         } else {
             map.put("message", "Update fail.");
-            return ResponseEntity.badRequest().body(map);
+            return ResponseEntity.status(HttpStatusCode.valueOf(404)).body(map);
         }
     }
 }
