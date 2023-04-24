@@ -2,6 +2,7 @@ package com.jwt.jwt.controller;
 
 import com.jwt.jwt.model.request.LoginRequest;
 import com.jwt.jwt.service.AuthService;
+import com.jwt.jwt.service.ValidationInput;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -18,15 +19,20 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody LoginRequest authRequest){
-        String token = authService.authenticateLogin(authRequest);
+    public ResponseEntity<Object> login(@RequestBody LoginRequest loginRequest){
         HashMap<String, String> map = new HashMap<>();
-        if (token.equals("")){
-            map.put("token", "");
-            return ResponseEntity.status(HttpStatusCode.valueOf(404)).body(map);
+        if (new ValidationInput().validation(loginRequest.getUsername()+loginRequest.getPassword())) {
+            String token = authService.authenticateLogin(loginRequest);
+            if (token.equals("")) {
+                map.put("token", "");
+                return ResponseEntity.status(HttpStatusCode.valueOf(401)).body(map);
+            } else {
+                map.put("token", token);
+                return ResponseEntity.ok(map);
+            }
         } else {
-            map.put("token", token);
-            return ResponseEntity.ok(map);
+            map.put("token", "");
+            return ResponseEntity.status(HttpStatusCode.valueOf(401)).body(map);
         }
     }
 

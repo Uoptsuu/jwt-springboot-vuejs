@@ -4,6 +4,7 @@ import com.jwt.jwt.entity.User;
 import com.jwt.jwt.model.DTO.UserDTO;
 import com.jwt.jwt.model.request.InsertRequest;
 import com.jwt.jwt.model.request.UpdateRequest;
+import com.jwt.jwt.service.RoleService;
 import com.jwt.jwt.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatusCode;
@@ -22,8 +23,9 @@ import java.util.Map;
 public class AdminController {
 
     private final UserService userService;
+    private final RoleService roleService;
     @GetMapping("/home")
-    public ResponseEntity<List> homePage(){
+    public ResponseEntity<Object> homePage() {
         List<User> userList = userService.getAllUser();
         List<UserDTO> userDTOList = new ArrayList<>();
         for (User user : userList) {
@@ -33,7 +35,7 @@ public class AdminController {
     }
 
     @DeleteMapping("/delete/{user_id}")
-    public ResponseEntity<Map> deleteUser(@PathVariable("user_id") Long userId){
+    public ResponseEntity<Object> deleteUser(@PathVariable("user_id") Long userId) {
         HashMap<String, String> map = new HashMap<>();
         if (userService.deleteUser(userId)) {
             map.put("message", "Delete success.");
@@ -45,11 +47,12 @@ public class AdminController {
     }
 
     @GetMapping("/update/{user_id}")
-    public ResponseEntity<Map> updatePage(@PathVariable("user_id") Long id){
-        HashMap<String, UserDTO> map = new HashMap<>();
+    public ResponseEntity<Object> updatePage(@PathVariable("user_id") Long id){
+        HashMap<String, Object> map = new HashMap<>();
         User user = userService.getUserById(id);
         if (user != null) {
             map.put("user", new UserDTO().toUserDTO(user));
+            map.put("listRole", roleService.getAllRole());
             return ResponseEntity.ok(map);
         } else {
             map.put("user", null);
@@ -57,8 +60,15 @@ public class AdminController {
         }
     }
 
+    @GetMapping("/insert")
+    public ResponseEntity<Object> insertPage(){
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("listRole", roleService.getAllRole());
+        return ResponseEntity.ok(map);
+    }
+
     @PostMapping("/insert")
-    public ResponseEntity<Map> insertUser(@RequestBody InsertRequest insertRequest){
+    public ResponseEntity<Object> insertUser(@RequestBody InsertRequest insertRequest){
         HashMap<String, String> map = new HashMap<>();
         if (userService.insertUser(insertRequest)) {
             map.put("message", "Insert success.");
@@ -70,7 +80,7 @@ public class AdminController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Map> updateUser(@RequestBody UpdateRequest updateRequest){
+    public ResponseEntity<Object> updateUser(@RequestBody UpdateRequest updateRequest){
         HashMap<String, String> map = new HashMap<>();
         if (userService.updateUser(updateRequest)) {
             map.put("message", "Update success.");

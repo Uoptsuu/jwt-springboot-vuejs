@@ -1,24 +1,20 @@
-<!-- eslint-disable vue/multi-word-component-names -->
-<!-- eslint-disable vue/multi-word-component-names -->
 <template>
     <form @submit="login" method="post">
         <label>Username: </label>
         <input type="text" v-model="User.username" name="username">
         <br>
+        <br>
         <label>Password: </label>
         <input type="password" v-model="User.password" name="password">
-        <div class="box-footer">
-            <button type="submit" class="btn btn-primary">Submit</button>
-            <a href="/" class="btn btn-info">Cancel</a>
-        </div>
+        <br>
+        <br>
+        <button type="submit">Submit</button>
     </form>
 </template>
 
 <script>
-    import axios from 'axios';
-  
+    import UserService from '../service/UserService'
     export default {
-        // eslint-disable-next-line vue/multi-word-component-names
         name:'Login',
         data(){
             return {
@@ -31,11 +27,10 @@
         methods: {
             login(){
                 console.log(this.User)
-                axios.post('http://localhost:8080/api/auth/login',this.User) 
+                UserService.login(this.User) 
                 // .then(() => {
-                //   alert("saveddd");
                 //   // eslint-disable-next-line no-undef
-                //   redirect('/home');
+                //   redirect('/');
                 // })
                 .catch((err) => {console.log(err)})
             }

@@ -20,6 +20,7 @@ public class JwtService {
                 .create()
                 .withJWTId(UUID.randomUUID().toString())
                 .withAudience(user.getUsername())
+                .withNotBefore(new Date(System.currentTimeMillis()))
                 .withExpiresAt(new Date(System.currentTimeMillis() + 60*60*60*1000))
                 .withClaim("role", authorities.toString())
                 .sign(algorithm);

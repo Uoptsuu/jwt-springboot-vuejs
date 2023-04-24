@@ -2,8 +2,8 @@ import axios from 'axios'
 
 const USER_API_BASE_URL = 'http://localhost:8080/api/auth'
 class UserService{
-    login(lognRequest){
-        return axios.post(USER_API_BASE_URL + `/login`, lognRequest);
+    login(loginRequest){
+        return axios.post(USER_API_BASE_URL + `/login`, loginRequest);
     }
     homePageUser(){
         return axios.get(USER_API_BASE_URL + `/user/home`);
@@ -11,8 +11,11 @@ class UserService{
     getUsers(){
         return axios.get(USER_API_BASE_URL + `/admin/home`);
     }
-    getUserById(user_id){
+    getDataForUpdate(user_id){
         return axios.get(USER_API_BASE_URL + `/admin/update/${user_id}`)
+    }
+    getRoleForInsert(){
+        return axios.get(USER_API_BASE_URL + `/admin/insert`)
     }
     update(updateRequest) {
         return axios.put(USER_API_BASE_URL + `/admin/update`, updateRequest)

@@ -1,15 +1,15 @@
 <script>
-// import RouterLink from 'vue-router'
-// import RouterView from 'vue-router'
-import Login from '../components/Login.vue'
+import RouterLink from 'vue-router'
+import RouterView from 'vue-router'
+import Insert from '../components/Insert.vue'
 export default {
-    name:"loginView",
+    name:"insertView",
     components: {
-        Login
+        Insert
     }
 }
 </script>
 
 <template>
-    <Login/>
+    <Insert/>
 </template>

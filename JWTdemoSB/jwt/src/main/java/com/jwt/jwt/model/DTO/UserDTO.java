@@ -15,7 +15,7 @@ public class UserDTO {
     private String address;
     private Long role;
 
-    public UserDTO toUserDTO(User user){
+    public UserDTO toUserDTO(User user) {
         return new UserDTO(user.getId(), user.getUsername(), user.isActive(), user.getAddress(), user.getRole().getId());
     }
 }

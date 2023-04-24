@@ -30,7 +30,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                 .requestMatchers("/api/auth/user/**").hasAnyAuthority("ROLE_USER")
                 .requestMatchers("/api/auth/admin/**").hasAnyAuthority("ROLE_ADMIN")
-    //            .anyRequest().permitAll()
+//                .anyRequest().permitAll()
                 .and()
                 .csrf()
                 .disable()

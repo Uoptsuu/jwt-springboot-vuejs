@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin("http://localhost:5173/")
 public class UserController {
 
-    private final AuthService authService;
     @GetMapping("/home")
     public ResponseEntity<String> login(){
         return ResponseEntity.ok("Hello");

@@ -1,15 +1,15 @@
 <script>
-// import RouterLink from 'vue-router'
-// import RouterView from 'vue-router'
-import Login from '../components/Login.vue'
+import RouterLink from 'vue-router'
+import RouterView from 'vue-router'
+import HomeAdmin from '../components/HomeAdmin.vue'
 export default {
-    name:"loginView",
+    name:"homeAdminView",
     components: {
-        Login
+        HomeAdmin
     }
 }
 </script>
 
 <template>
-    <Login/>
+    <HomeAdmin/>
 </template>

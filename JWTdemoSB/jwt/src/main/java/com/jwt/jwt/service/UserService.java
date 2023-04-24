@@ -27,7 +27,7 @@ public class UserService{
     private final RoleRepository roleRepository;
 
     private final PasswordEncoder passwordEncoder;
-    public List<User> getAllUser(){
+    public List<User> getAllUser() {
         return userRepository.findAll();
     }
     public User saveUser(User user) {
@@ -47,7 +47,7 @@ public class UserService{
         } else return false;
     }
 
-    public boolean insertUser(InsertRequest insertRequest){
+    public boolean insertUser(InsertRequest insertRequest) {
         if (userRepository.countByUsername(insertRequest.getUsername()) > 0) {
             return false;
         } else {
@@ -73,7 +73,7 @@ public class UserService{
         } else return false;
     }
 
-    public User getUserById(Long id){
+    public User getUserById(Long id) {
         if (userRepository.findById(id).isPresent()) {
             return userRepository.findById(id).get();
         } else return null;
