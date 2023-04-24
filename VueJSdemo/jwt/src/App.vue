@@ -1,11 +1,15 @@
 <script>
-import RouterLink from 'vue-router'
-import RouterView from 'vue-router'
+import {RouterLink, RouterView} from 'vue-router'
 export default {
-  name:"App"
+  name:"App",
+  components: {
+
+  }
 }
 </script>
 
 <template>
-  <RouterView/>
+  <div id="app">
+    <router-view></router-view>
+  </div>
 </template>

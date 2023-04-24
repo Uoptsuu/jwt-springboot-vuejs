@@ -1,21 +1,17 @@
 <template>
-    <form @submit="update" method="post">
+    <form @submit.prevent="update">
         <input type="hidden" name="id" v-model="User.id">
         <label>Username: </label>
         <input type="text" v-model="User.username" name="username">
         <br>
         <br>
-        <label>Password: </label>
-        <input type="password" v-model="User.password" name="password">
-        <br>
-        <br>
         <label>Address: </label>
-        <input type="password" v-model="User.address" name="address">
+        <input type="text" v-model="User.address" name="address">
         <br>
         <br>
         <label>Role: </label>
-        <div v-for="role in Roles" v-bind:key="rode.id">
-            <input type="radio" v-model="User.roleId" name="roleId" value="{{role.id}}">
+        <div v-for="role in Roles" v-bind:key="role.id">
+            <input type="radio" v-model="User.role" name="roleId" value={{role.id}}>
             <label>{{role.name}}</label>
         </div>
         <br>
@@ -27,22 +23,21 @@
         <label>No</label>
         <br>
         <br>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Save</button>
     </form>
 </template>
 
 <script>
     import UserService from '../service/UserService.js'
     export default {
-        name:'Update',
+        name :'Update',
         data(){
             return {
                 User: {
                     id:'',
                     username: '',
-                    password: '',
                     address: '',
-                    roleId: '',
+                    role: '',
                     active: ''
                 },
                 Roles: []
@@ -51,7 +46,7 @@
         },
         methods: {
             setData(){
-                UserService.getRoleForInsert().then((res => {
+                UserService.getDataForUpdate(this.$route.params.id).then((res => {
                     console.log(res);
                     this.Roles = res.data.listRole;
                     this.User = res.data.user;
@@ -68,6 +63,7 @@
             }
         },
         created() {
+            //UserService.checkLogin;
             this.setData();
         }    
     }

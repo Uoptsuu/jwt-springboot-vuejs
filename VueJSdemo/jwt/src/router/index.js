@@ -1,36 +1,37 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import homeUserView from '../view/HomeUserView.vue'
-import homeAdminView from '../view/HomeAdminView.vue'
-import insertView from '../view/InsertView.vue'
-import updateView from '../view/UpdateView.vue'
-import loginView from '../view/LoginView.vue'
+import HomeUserView from '../view/HomeUserView.vue'
+import HomeAdminView from '../view/HomeAdminView.vue'
+import InsertView from '../view/InsertView.vue'
+import UpdateView from '../view/UpdateView.vue'
+import LoginView from '../view/LoginView.vue'
+// import Login from '../components/Login.vue'
+// import Update from '../components/Update.vue'
+// import Insert from '../components/Insert.vue'
+// import HomeUser from '../components/HomeUser.vue'
+// import HomeAdmin from '../components/HomeAdmin.vue'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
         path: '/',
-        name: 'loginView',
-        component: loginView
+        component: LoginView
     },
     {
         path: '/user',
-        name: 'homeUserView',
-        component: homeUserView
+        component: HomeUserView
     },
     {
       path: '/admin',
-      name: 'homeAdminView',
-      component: homeAdminView
+      component: HomeAdminView
     },
     {
       path: '/admin/create',
-      name: 'insertView',
-      component: insertView
+      component: InsertView
     },
     {
       path: '/admin/update/:id',
-      name: 'updateView',
-      component: updateView
+      component: UpdateView
     }
   ]
 })

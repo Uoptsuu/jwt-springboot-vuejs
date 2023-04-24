@@ -26,7 +26,6 @@
 <script>
     import UserService from '../service/UserService.js'
     export default {
-        name:'Insert',
         data(){
             return {
                 User: {
@@ -57,6 +56,7 @@
             }
         },
         created() {
+            //UserService.checkLogin;
             this.setRole;
         }    
     }

@@ -1,22 +1,22 @@
 <template>
     <div v-for="user in Users" v-bind:key="user.id">
-        <label for="username">Username: </label>
-        <p id="username" name="username">{{ user.id }}</p>
+        <label for="username"><b>Username: </b></label>
+        <span id="username" name="username">{{ user.id }}</span>
         <br>
         <br>
-        <label for="role">Role: </label>
-        <p id="role" name="role">{{ user.roleId }}</p>
+        <label for="role"><b>Role: </b></label>
+        <span id="role" name="role">{{ user.role }}</span>
         <br>
         <br>
-        <label for="address">Address: </label>
-        <p id="address" name="address">{{ user.address }}</p>
+        <label for="address"><b>Address: </b></label>
+        <span id="address" name="address">{{ user.address }}</span>
         <br>
         <br>
-        <label for="active">Active: </label>
-        <p id="active" name="active">{{ user.active }}</p>
+        <label for="active"><b>Active: </b></label>
+        <span id="active" name="active">{{ user.active }}</span>
         <br>
         <br>
-        <a :href="'/auth/admin/update/' + user.id"><button>Update</button></a>
+        <a :href="'/admin/update/' + user.id"><button>Update</button></a>
         <a href="" @click="delete(user.id)"><button>Delete</button></a>
         <hr>
     </div>
@@ -25,7 +25,7 @@
 <script>
     import UserService from '../service/UserService.js'
     export default {
-        name:'HomeAdmin',
+        name :'HomeAdmin',
         data(){
             return {
                 Users: []
@@ -49,6 +49,7 @@
             }
         },
         created() {
+            //UserService.checkLogin;
             this.getUsers();
         }    
     }

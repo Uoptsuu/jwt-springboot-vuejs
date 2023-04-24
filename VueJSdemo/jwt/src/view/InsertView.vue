@@ -1,9 +1,8 @@
 <script>
-import RouterLink from 'vue-router'
-import RouterView from 'vue-router'
+import {RouterLink, RouterView} from 'vue-router'
 import Insert from '../components/Insert.vue'
 export default {
-    name:"insertView",
+    name:"InsertView",
     components: {
         Insert
     }

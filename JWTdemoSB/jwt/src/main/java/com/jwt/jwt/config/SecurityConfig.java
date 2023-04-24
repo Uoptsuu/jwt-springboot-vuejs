@@ -21,12 +21,13 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.cors();
         http.csrf().disable();
         http
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http
-                .authorizeRequests()
+                .authorizeHttpRequests()
                 .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                 .requestMatchers("/api/auth/user/**").hasAnyAuthority("ROLE_USER")
                 .requestMatchers("/api/auth/admin/**").hasAnyAuthority("ROLE_ADMIN")
@@ -34,7 +35,7 @@ public class SecurityConfig {
                 .and()
                 .csrf()
                 .disable()
-                .authorizeRequests()
+                .authorizeHttpRequests()
                 .anyRequest()
                 .authenticated()
                 .and()

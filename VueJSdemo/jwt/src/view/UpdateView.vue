@@ -1,9 +1,8 @@
 <script>
-import RouterLink from 'vue-router'
-import RouterView from 'vue-router'
+import {RouterLink, RouterView} from 'vue-router'
 import Update from '../components/Update.vue'
 export default {
-    name:"updateView",
+    name:"UpdateView",
     components: {
         Update
     }

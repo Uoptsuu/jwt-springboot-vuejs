@@ -1,9 +1,8 @@
 <script>
-import RouterLink from 'vue-router'
-import RouterView from 'vue-router'
+import {RouterLink, RouterView} from 'vue-router'
 import HomeAdmin from '../components/HomeAdmin.vue'
 export default {
-    name:"homeAdminView",
+    name:"HomeAdminView",
     components: {
         HomeAdmin
     }

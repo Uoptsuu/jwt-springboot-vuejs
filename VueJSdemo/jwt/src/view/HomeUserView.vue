@@ -1,9 +1,8 @@
 <script>
-import RouterLink from 'vue-router'
-import RouterView from 'vue-router'
+import {RouterLink, RouterView} from 'vue-router'
 import HomeUser from '../components/HomeUser.vue'
 export default {
-    name:"homeUserView",
+    name:"HomeUserView",
     components: {
         HomeUser
     }

@@ -14,7 +14,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
@@ -39,7 +38,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
 
     @Override
-    protected void doFilterInternal(@NonNull HttpServletRequest httpServletRequest, @NonNull HttpServletResponse httpServletResponse, @NonNull FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest httpServletRequest, @NonNull HttpServletResponse httpServletResponse, @NonNull FilterChain filterChain) throws ServletException, IOException {
         final String authHeader = httpServletRequest.getHeader(AUTHORIZATION);
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             try {
@@ -67,7 +66,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             } catch (Exception exception){
                 httpServletResponse.setHeader("error", exception.getMessage());
                 httpServletResponse.setStatus(FORBIDDEN.value());
-                Map<String, String> error = new HashMap<>();
+                HashMap<String, String> error = new HashMap<>();
                 error.put("error_message", exception.getMessage());
                 httpServletResponse.setContentType(APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(httpServletResponse.getOutputStream(), error);

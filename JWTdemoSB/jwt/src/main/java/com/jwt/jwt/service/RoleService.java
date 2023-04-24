@@ -1,6 +1,7 @@
 package com.jwt.jwt.service;
 
 import com.jwt.jwt.entity.Role;
+import com.jwt.jwt.entity.User;
 import com.jwt.jwt.repository.RoleRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -24,5 +25,9 @@ public class RoleService {
     }
     public Role saveRole(Role role) {
         return roleRepository.save(role);
+    }
+
+    public Role getRoleNameByUser(String username){
+        return roleRepository.findRoleByUsername(username);
     }
 }
