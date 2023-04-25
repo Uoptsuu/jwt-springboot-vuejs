@@ -16,7 +16,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query(value = "SELECT * FROM users WHERE is_delete = false", nativeQuery = true)
     List<User> findAll();
-    @Query(value = "SELECT * FROM users WHERE is_delete = false AND is_active = true AND username = :username", nativeQuery = true)
+    @Query(value = "SELECT * FROM users WHERE is_delete = false AND username = :username", nativeQuery = true)
     Optional<User> findByUsername(@Param("username") String username);
     User save(User user);
 
@@ -30,6 +30,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Integer countByUsername(@Param("username") String username);
 
     @Modifying
-    @Query(value = "UPDATE users SET is_delete = TRUE WHERE user_id = :user_id", nativeQuery = true)
+    @Query(value = "UPDATE users SET is_delete = TRUE, is_active = false WHERE user_id = :user_id", nativeQuery = true)
     void deleteSoft(@Param("user_id") Long userId);
+
+    //void deleteById(Long id);
 }

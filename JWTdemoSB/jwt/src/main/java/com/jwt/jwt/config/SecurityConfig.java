@@ -3,7 +3,6 @@ package com.jwt.jwt.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -28,7 +27,7 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http
                 .authorizeHttpRequests()
-                .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+                .requestMatchers("/api/auth/login").permitAll()
                 .requestMatchers("/api/auth/user/**").hasAnyAuthority("ROLE_USER")
                 .requestMatchers("/api/auth/admin/**").hasAnyAuthority("ROLE_ADMIN")
 //                .anyRequest().permitAll()

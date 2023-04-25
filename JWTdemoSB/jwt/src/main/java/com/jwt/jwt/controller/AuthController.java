@@ -1,6 +1,5 @@
 package com.jwt.jwt.controller;
 
-import com.jwt.jwt.entity.Role;
 import com.jwt.jwt.model.request.LoginRequest;
 import com.jwt.jwt.service.AuthService;
 import com.jwt.jwt.service.RoleService;
@@ -21,8 +20,7 @@ import java.util.Map;
 public class AuthController {
 
     private final AuthService authService;
-    private final UserService userService;
-    private final RoleService roleService;
+
 
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody LoginRequest loginRequest){

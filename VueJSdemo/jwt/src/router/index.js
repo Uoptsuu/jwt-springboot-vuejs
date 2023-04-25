@@ -26,7 +26,7 @@ const router = createRouter({
       component: HomeAdminView
     },
     {
-      path: '/admin/create',
+      path: '/admin/insert',
       component: InsertView
     },
     {

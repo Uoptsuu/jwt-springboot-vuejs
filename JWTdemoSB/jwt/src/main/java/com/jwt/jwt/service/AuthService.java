@@ -3,7 +3,6 @@ package com.jwt.jwt.service;
 import com.jwt.jwt.model.request.LoginRequest;
 import com.jwt.jwt.entity.Role;
 import com.jwt.jwt.entity.User;
-import com.jwt.jwt.repository.RoleRepository;
 import com.jwt.jwt.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,13 +13,11 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class AuthService {
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
@@ -39,11 +36,14 @@ public class AuthService {
                 SimpleGrantedAuthority authorities = new SimpleGrantedAuthority(role.getName());
                 token = jwtService.generateToken(user, authorities);
                 roleName = role.getName();
+                message = "Success";
             }
         } catch (AuthenticationException ignored){
+            message = "Fail";
         } finally {
             response.put("token", token);
             response.put("role", roleName);
+            response.put("message",message);
         }
         return response;
     }

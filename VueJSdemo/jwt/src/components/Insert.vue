@@ -1,25 +1,31 @@
 <template>
-    <form @submit="insert" method="post">
-        <label>Username: </label>
-        <input type="text" v-model="User.username" name="username">
-        <br>
-        <br>
-        <label>Password: </label>
-        <input type="password" v-model="User.password" name="password">
-        <br>
-        <br>
-        <label>Address: </label>
-        <input type="password" v-model="User.address" name="address">
-        <br>
-        <br>
-        <label>Role: </label>
-        <div v-for="role in Roles" v-bind:key="rode.id">
-            <input type="radio" v-model="User.roleId" name="roleId" value="{{role.id}}">
-            <label>{{role.name}}</label>
+    <form @submit.prevent="insert()" style="width: 20%; margin: auto ;">
+        <h4 class="display h-5" align=center>Insert</h4>
+        <div class="mb-3">
+            <label for="username" class="form-label"><b>Username: </b></label>
+            <input type="text" v-model="User.username" class="form-control" id="username" name="username" aria-describedby="">
         </div>
-        <br>
-        <br>
+        <div class="mb-3">
+            <label for="address" class="form-label"><b>Address: </b></label>
+            <input type="text" v-model="User.address" class="form-control" id="address" name="address" aria-describedby="">
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label"><b>Password: </b></label>
+            <input type="text" v-model="User.password" class="form-control" id="password" name="password" aria-describedby="">
+        </div>
+        <div class="mb-3">
+            <label for="" class="form-label"><b>Role: </b></label>
+            <div v-for="role in Roles" v-bind:key="role.id">
+                <input type="radio" v-model="User.roleId" name="roleId" :value="role.id" class="form-check-input">
+                <label class="form-check-label">{{role.name}}</label>
+            </div>
+        </div>
         <button type="submit" class="btn btn-primary">Submit</button>
+        <br>
+        <br>
+        <div class="alert alert-danger" role="alert" v-bind:style="{ display }">
+            {{ message }}
+        </div>
     </form>
 </template>
 
@@ -34,30 +40,55 @@
                     address: '',
                     roleId: ''
                 },
-                Roles: []
+                Roles: [],
+                display:'none',
+                message:''
             }
             
         },
         methods: {
+            checkInsert(){
+                let msg = "";
+                console.log(this.User.username + this.User.address + this.User.password + this.User.roleId);
+                if (UserService.checkSpecialChar(this.User.username + this.User.address + this.User.password + this.User.roleId)){
+                    msg += "không được chứa các ký tự đặc biệt";
+                } 
+                if (this.User.address == "" || this.User.username == "" || this.User.roleId == "" || this.User.password == "") {
+                    if (msg != "") msg += " và ";
+                    msg += "không được bỏ trống";
+                }
+                if (msg != "") msg = "Thông tin " + msg + ".";
+                return msg;
+            },
             setRole(){
                 UserService.getRoleForInsert().then((res => {
                     console.log(res)
-                    this.Roles = res.data;
+                    this.Roles = res.data.listRole;
                 }))
             },
             insert(){
-                console.log(this.User)
-                UserService.insert(this.User) 
-                // .then(() => {
-                //   // eslint-disable-next-line no-undef
-                //   redirect('/');
-                // })
-                .catch((err) => {console.log(err)})
+                if (this.checkInsert() == "") {
+                    //console.log(this.User);
+                    //console.log(this.checkUpdate());
+                    UserService.insert(this.User) 
+                        .then(() => {
+                            sessionStorage.setItem('change',true);
+                            sessionStorage.setItem('msg','Thành công!');
+                            this.$router.push('/admin');
+                        })
+                    .catch((err) => {
+                        this.display = 'block';
+                        this.message = "Cập nhật thất bại. Error: " + err;
+                    })
+                } else {
+                    this.display = 'block';
+                    this.message = this.checkInsert();
+                }
             }
         },
         created() {
-            //UserService.checkLogin;
-            this.setRole;
+            UserService.checkLogin();
+            this.setRole();
         }    
     }
 </script>

@@ -11,9 +11,9 @@ import lombok.*;
 public class UpdateRequest {
     private Long id;
     private String username;
-    private String password;
+    //private String password;
     private String address;
-    private int isActive;
-    //private boolean isActive;
-    private Long roleId;
+    //private int isActive;
+    private boolean isActive;
+    private Long role;
 }

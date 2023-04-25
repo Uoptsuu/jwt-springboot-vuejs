@@ -1,5 +1,7 @@
 <template>
-    Hello
+    <hr>
+        <h4 class="display h-5" align="center">HELLO</h4>
+    <hr>
 </template>
 
 <script>
@@ -7,7 +9,7 @@
     export default {
         name:'HomeUser',
         created() {
-            //UserService.checkLogin;
+            UserService.checkLogin();
         }    
     }
 </script>

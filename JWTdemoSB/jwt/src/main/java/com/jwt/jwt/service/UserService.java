@@ -61,13 +61,14 @@ public class UserService{
     public boolean updateUser(UpdateRequest updateRequest) {
         if (userRepository.findById(updateRequest.getId()).isPresent()) {
             User user = userRepository.findById(updateRequest.getId()).get();
-            user.setActive(updateRequest.getIsActive() != 0);
-            //user.setActive(updateRequest.isActive());
-            user.setPassword(updateRequest.getPassword());
+            //user.setActive(updateRequest.getIsActive() != 0);
+            user.setActive(updateRequest.isActive());
+            //user.setPassword(updateRequest.getPassword());
             user.setAddress(updateRequest.getAddress());
             user.setUsername(updateRequest.getUsername());
-            if (saveUser(user) != null) {
-                setRole(updateRequest.getUsername(), roleRepository.findById(updateRequest.getRoleId()).orElseThrow().getName());
+            User userSave = saveUser(user);
+            if (userSave != null) {
+                setRole(updateRequest.getUsername(), roleRepository.findById(updateRequest.getRole()).orElseThrow().getName());
                 return true;
             } else return false;
         } else return false;
