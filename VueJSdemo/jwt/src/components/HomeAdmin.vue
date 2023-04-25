@@ -1,5 +1,14 @@
 <template>
     <div class="table-responsive" style="width: 70%; margin: auto;">
+        <form @submit.prevent="search()" style="width: 50%; margin: auto ;">
+            <input type="text" v-model="key" class="form-control" id="key" name="key" placeholder="Nhập ID hoặc Role"><br>
+            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+            <!-- <br>
+            <br>
+            <div class="alert alert-danger" role="alert" v-bind:style="{ display }">
+                {{ message }}
+            </div> -->
+        </form>
         <h4 class="display h-5" text-align="center">Danh sách người dùng</h4>
         <a :href="'/admin/insert/'" class="btn btn-primary" style="width: 150px; margin-bottom: 10px;">Add</a>
         <div class="alert alert-success" role="alert" v-bind:style="{ display }">
@@ -46,7 +55,8 @@
             return {
                 Users: [],
                 display: 'none',
-                message: ''
+                message: '',
+                key:''
             }
         },
         methods: {
@@ -56,7 +66,6 @@
                     this.Users = res.data;
                 }))
             },
-  
             deleteUser(id){
                 if (confirm("Are you sure you want to delete?")) {
                     UserService.delete(id).then(() => {
@@ -65,10 +74,20 @@
                     })
                     .catch((err) => {console.log(err)});
                 } else {}
+            },
+            search(){
+                if (UserService.checkSpecialChar(this.key)) {
+                    alert("Thông tin tìm kiếm không hợp lệ!");
+                } else {
+                    UserService.search(this.key).then((res => {
+                        console.log(res);
+                        this.Users = res.data;
+                    }))
+                }
             }
         },
         created() {
-            UserService.checkLogin(this.$router);
+            //UserService.checkLogin(this.$router);
             //this.$router.go(this.$router.currentRoute)
             //console.log(sessionStorage.getItem("jwtToken"));
             if (sessionStorage.getItem('change') != null && sessionStorage.getItem('change')){

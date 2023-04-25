@@ -9,7 +9,7 @@
     export default {
         name:'HomeUser',
         created() {
-            UserService.checkLogin();
+            //UserService.checkLogin();
         }    
     }
 </script>

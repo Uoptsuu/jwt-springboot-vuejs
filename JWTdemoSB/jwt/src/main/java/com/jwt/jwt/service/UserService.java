@@ -30,6 +30,9 @@ public class UserService{
     public List<User> getAllUser() {
         return userRepository.findAll();
     }
+    public List<User> getAllUserByKey(Long key) {
+        return userRepository.findAllByKey(key);
+    }
     public User saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);

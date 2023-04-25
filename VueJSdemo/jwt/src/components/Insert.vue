@@ -87,7 +87,7 @@
             }
         },
         created() {
-            UserService.checkLogin();
+            //UserService.checkLogin();
             this.setRole();
         }    
     }

@@ -96,7 +96,7 @@
             }
         },
         created() {
-            UserService.checkLogin();
+            //UserService.checkLogin();
             this.setData();
         }    
     }

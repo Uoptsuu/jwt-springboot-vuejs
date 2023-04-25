@@ -9,6 +9,9 @@ class UserService{
     homePageUser() {
         return axios.get(`/user/home`)
     }
+    search(key) {
+        return axios.get(`/admin/home?key=${key}`)
+    }
     getUsers(){
         return axios.get(`/admin/home`)
     }

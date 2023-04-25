@@ -7,6 +7,7 @@ import com.jwt.jwt.model.request.UpdateRequest;
 import com.jwt.jwt.service.RoleService;
 import com.jwt.jwt.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

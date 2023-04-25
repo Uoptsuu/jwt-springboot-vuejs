@@ -11,6 +11,7 @@ import LoginView from '../view/LoginView.vue'
 // import HomeAdmin from '../components/HomeAdmin.vue'
 
 const router = createRouter({
+  //BASE_URL: 'http://ezcloud-demo.com/',
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
