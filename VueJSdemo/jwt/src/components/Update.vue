@@ -20,10 +20,10 @@
         <div class="mb-3">
             <label for="" class="form-label"><b>Active: </b></label>
             <div>
-                <input type="radio" v-model="User.active" name="active" value=true class="form-check-input">
+                <input type="radio" v-model="User.active" name="active" value="true" class="form-check-input">
                 <label class="form-check-label">Yes</label>
                 <br>
-                <input type="radio" v-model="User.active" name="active" value=false class="form-check-input">
+                <input type="radio" v-model="User.active" name="active" value="false" class="form-check-input">
                 <label class="form-check-label">No</label>
             </div>
         </div>
