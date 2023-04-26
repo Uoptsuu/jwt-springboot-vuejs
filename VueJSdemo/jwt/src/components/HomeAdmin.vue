@@ -70,13 +70,13 @@
                 if (confirm("Are you sure you want to delete?")) {
                     UserService.delete(id).then(() => {
                         alert("Deleted.");
-                        this.getUsers();
                     })
-                    .catch((err) => {console.log(err)});
-                } else {}
+                    .catch((err) => {alert("Không thể xoá. Error: " + err + ".");});
+                    this.getUsers();
+                }
             },
             search(){
-                if (UserService.checkSpecialChar(this.key)) {
+                if (UserService.checkSpecialChar(this.key) || this.key == '') {
                     alert("Thông tin tìm kiếm không hợp lệ!");
                 } else {
                     UserService.search(this.key).then((res => {

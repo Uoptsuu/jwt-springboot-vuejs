@@ -87,7 +87,6 @@
             }
         },
         created() {
-            //UserService.checkLogin();
             this.setRole();
         }    
     }

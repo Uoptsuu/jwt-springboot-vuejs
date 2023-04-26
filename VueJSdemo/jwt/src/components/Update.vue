@@ -80,11 +80,11 @@
                     //console.log(this.User);
                     //console.log(this.checkUpdate());
                     UserService.update(this.User) 
-                        .then(() => {
-                            sessionStorage.setItem('change',true);
-                            sessionStorage.setItem('msg','Thành công!');
-                            this.$router.push('/admin');
-                        })
+                    .then(() => {
+                        sessionStorage.setItem('change',true);
+                        sessionStorage.setItem('msg','Thành công!');
+                        this.$router.push('/admin');
+                    })
                     .catch((err) => {
                         this.display = 'block';
                         this.message = "Cập nhật thất bại. Error: " + err;
@@ -96,7 +96,6 @@
             }
         },
         created() {
-            //UserService.checkLogin();
             this.setData();
         }    
     }

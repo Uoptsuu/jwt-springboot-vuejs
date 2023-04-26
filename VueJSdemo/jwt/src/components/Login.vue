@@ -43,7 +43,7 @@
                                 window.sessionStorage.clear();
                                 window.sessionStorage.setItem("jwtToken", res.data.token);
                                 window.sessionStorage.setItem("role", res.data.role);
-                                axios.defaults.headers.Authorization = `Bearer ${res.data.token}`
+                                axios.defaults.headers.Authorization = `Bearer ${res.data.token}`;
                                 if(res.data.role == "ROLE_ADMIN") {
                                     this.$router.push("/admin");
                                 } else if(res.data.role == "ROLE_USER") {
