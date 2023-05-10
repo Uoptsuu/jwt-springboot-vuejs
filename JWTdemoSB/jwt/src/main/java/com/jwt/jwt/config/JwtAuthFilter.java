@@ -20,7 +20,9 @@ import java.util.*;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -64,7 +66,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                     filterChain.doFilter(httpServletRequest, httpServletResponse);
                 }
             } catch (Exception exception){
-                httpServletResponse.setHeader("error", exception.getMessage());
                 httpServletResponse.setStatus(FORBIDDEN.value());
                 HashMap<String, String> error = new HashMap<>();
                 error.put("error_message", exception.getMessage());

@@ -1,7 +1,7 @@
 <template>
     <div class="table-responsive" style="width: 70%; margin: auto;">
         <form @submit.prevent="search()" style="width: 50%; margin: auto ;">
-            <input type="text" v-model="key" class="form-control" id="key" name="key" placeholder="Nhập ID hoặc Role"><br>
+            <input type="text" v-model="key" class="form-control" id="key" name="key" placeholder="Nhập Username hoặc Address"><br>
             <button type="submit" class="btn btn-primary">Tìm kiếm</button>
             <!-- <br>
             <br>
@@ -62,7 +62,6 @@
         methods: {
             getUsers(){
                 UserService.getUsers().then((res => {
-                    console.log(res);
                     this.Users = res.data;
                 }))
             },
@@ -76,11 +75,10 @@
                 }
             },
             search(){
-                if (UserService.checkSpecialChar(this.key) || this.key == '') {
+                if (UserService.checkSpecialChar(this.key)) {
                     alert("Thông tin tìm kiếm không hợp lệ!");
                 } else {
                     UserService.search(this.key).then((res => {
-                        console.log(res);
                         this.Users = res.data;
                     }))
                 }
@@ -95,6 +93,8 @@
                 this.message = sessionStorage.getItem('msg');
                 sessionStorage.removeItem('change');
             } 
+
+
             this.getUsers();
         }
     }

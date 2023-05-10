@@ -10,6 +10,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -37,9 +40,9 @@ public class AuthService {
                 token = jwtService.generateToken(user, authorities);
                 roleName = role.getName();
                 message = "Success";
-            }
-        } catch (AuthenticationException ignored){
-            message = "Fail";
+            } else message = "Password invalid";
+        } catch (AuthenticationException authenticationException){
+            message = authenticationException.getMessage();
         } finally {
             response.put("token", token);
             response.put("role", roleName);
@@ -47,4 +50,5 @@ public class AuthService {
         }
         return response;
     }
+
 }

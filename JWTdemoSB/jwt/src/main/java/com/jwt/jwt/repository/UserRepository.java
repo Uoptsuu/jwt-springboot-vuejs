@@ -32,8 +32,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying
     @Query(value = "UPDATE users SET is_delete = TRUE, is_active = false WHERE user_id = :user_id", nativeQuery = true)
     void deleteSoft(@Param("user_id") Long userId);
-    @Query(value = "SELECT * FROM users WHERE is_delete = false and (user_id = :key or role_id = :key)", nativeQuery = true)
-    List<User> findAllByKey(@Param("key") Long key);
+    @Query(value = "SELECT u FROM User u WHERE u.isDelete = false and concat(u.username,u.address) like %?1%")
+    List<User> findAllByKey(String key);
 
     //void deleteById(Long id);
 }

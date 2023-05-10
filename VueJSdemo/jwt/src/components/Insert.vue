@@ -20,7 +20,8 @@
                 <label class="form-check-label">{{role.name}}</label>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary" style="margin-right: 5px;">Submit</button>
+        <button type="reset" class="btn btn-secondary">Clear</button>
         <br>
         <br>
         <div class="alert alert-danger" role="alert" v-bind:style="{ display }">

@@ -25,8 +25,13 @@ public class AdminController {
     private final UserService userService;
     private final RoleService roleService;
     @GetMapping("/home")
-    public ResponseEntity<Object> homePage() {
-        List<User> userList = userService.getAllUser();
+    public ResponseEntity<Object> homePage(@RequestParam(name = "key", required = false, defaultValue = "") String key) {
+        List<User> userList = new ArrayList<>();
+        if (key.equals("")) {
+            userList =  userService.getAllUser();
+        } else {
+            userList = userService.getAllUserByKey(key);
+        }
         List<UserDTO> userDTOList = new ArrayList<>();
         for (User user : userList) {
             userDTOList.add(new UserDTO().toUserDTO(user));

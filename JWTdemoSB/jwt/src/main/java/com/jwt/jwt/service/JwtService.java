@@ -15,6 +15,7 @@ public class JwtService {
     private static final String keyEncode = "ma_hoa_123" ;
 
     public String generateToken(User user, SimpleGrantedAuthority authorities) {
+        //SimpleGrantedAuthority
         Algorithm algorithm = Algorithm.HMAC256(keyEncode.getBytes());
         return JWT
                 .create()

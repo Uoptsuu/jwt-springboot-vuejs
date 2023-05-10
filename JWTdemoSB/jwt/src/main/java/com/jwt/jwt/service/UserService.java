@@ -30,7 +30,7 @@ public class UserService{
     public List<User> getAllUser() {
         return userRepository.findAll();
     }
-    public List<User> getAllUserByKey(Long key) {
+    public List<User> getAllUserByKey(String key) {
         return userRepository.findAllByKey(key);
     }
     public User saveUser(User user) {
