@@ -25,11 +25,13 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
 
-    public HashMap<String, String> authenticateLogin(LoginRequest loginRequest) {
-        HashMap<String, String> response = new HashMap<>();
+    public HashMap<String, Object> authenticateLogin(LoginRequest loginRequest) {
+        HashMap<String, Object> response = new HashMap<>();
+        HashMap<String, Object> data = new HashMap<>();
         String token = "";
         String roleName = "";
         String message = "";
+        String responseCode = "";
         try {
             Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
             if (authenticate.isAuthenticated()) {
@@ -39,14 +41,21 @@ public class AuthService {
                 SimpleGrantedAuthority authorities = new SimpleGrantedAuthority(role.getName());
                 token = jwtService.generateToken(user, authorities);
                 roleName = role.getName();
-                message = "Success";
-            } else message = "Password invalid";
+                message = "Login successful.";
+                responseCode = "00";
+            } else {
+                message = "Password invalid";
+                responseCode = "08";
+            }
         } catch (AuthenticationException authenticationException){
             message = authenticationException.getMessage();
+            responseCode = "05";
         } finally {
-            response.put("token", token);
-            response.put("role", roleName);
+            data.put("token",token);
+            data.put("role", roleName);
+            response.put("data", data);
             response.put("message",message);
+            response.put("responseCode",responseCode);
         }
         return response;
     }

@@ -16,6 +16,7 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
     Role save(Role role);
     List<Role> findAll();
 
-    @Query(value = "SELECT role_name FROM users JOIN roles ON users.role_id = roles.role_id WHERE username = :username AND is_active = TRUE AND is_delete = FALSE", nativeQuery = true)
+    @Query(value = "SELECT role_name FROM users JOIN roles ON users.role_id = roles.role_id WHERE username = :username AND users.is_active = TRUE AND users.is_delete = FALSE", nativeQuery = true)
     Role findRoleByUsername(@Param("username") String username);
+
 }

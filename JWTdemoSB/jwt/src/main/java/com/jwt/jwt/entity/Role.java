@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,6 +24,23 @@ public class Role {
 
     @Column(name = "role_name")
     private String name;
+
+//    @Column(name = "is_active")
+//    private boolean isActive;
+//    @Column(name = "is_delete")
+//    private boolean isDelete;
+//    @Column(name = "create_by")
+//    private Long createBy;
+//    @Column(name = "create_at")
+//    private LocalDateTime createAt;
+//    @Column(name = "update_by")
+//    private Long updateBy;
+//    @Column(name = "update_at")
+//    private LocalDateTime updateAt;
+//    @Column(name = "delete_by")
+//    private Long deleteBy;
+//    @Column(name = "delete_at")
+//    private LocalDateTime deleteAt;
 
     @OneToMany(mappedBy = "role")
     @JsonIgnore

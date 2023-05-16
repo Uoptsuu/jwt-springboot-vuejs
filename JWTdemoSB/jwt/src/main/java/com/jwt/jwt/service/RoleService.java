@@ -27,6 +27,12 @@ public class RoleService {
         return roleRepository.save(role);
     }
 
+    public Role getRoleById(Long id) {
+        if (roleRepository.findById(id).isPresent()) {
+            return roleRepository.findById(id).get();
+        } else return null;
+    }
+
     public Role getRoleNameByUser(String username){
         return roleRepository.findRoleByUsername(username);
     }

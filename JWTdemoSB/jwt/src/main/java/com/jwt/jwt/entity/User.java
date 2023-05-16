@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
@@ -33,6 +34,18 @@ public class User implements UserDetails {
     private boolean isActive;
     @Column(name = "is_delete")
     private boolean isDelete;
+    @Column(name = "create_by")
+    private Long createBy;
+    @Column(name = "create_at")
+    private LocalDateTime createAt;
+    @Column(name = "update_by")
+    private Long updateBy;
+    @Column(name = "update_at")
+    private LocalDateTime updateAt;
+    @Column(name = "delete_by")
+    private Long deleteBy;
+    @Column(name = "delete_at")
+    private LocalDateTime deleteAt;
 
     @ManyToOne
     @JoinColumn(name = "role_id")

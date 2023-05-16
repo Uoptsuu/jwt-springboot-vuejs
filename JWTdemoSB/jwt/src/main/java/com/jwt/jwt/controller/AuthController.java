@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -24,17 +25,20 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody LoginRequest loginRequest){
-        HashMap<String, String> map = new HashMap<>();
-        if (new ValidationInput().validation(loginRequest.getUsername()+loginRequest.getPassword())) {
-            map = authService.authenticateLogin(loginRequest);
-            if (map.get("token").equals("")) {
-                return ResponseEntity.status(HttpStatusCode.valueOf(401)).body(map);
+        HashMap<String, Object> response = new HashMap<>();
+        if (!Objects.equals(loginRequest.getUsername(), "") && !Objects.equals(loginRequest.getPassword(), "")) {
+            response = authService.authenticateLogin(loginRequest);
+            HashMap<String, Object> data = (HashMap<String, Object>) response.get("data");
+            if (data.get("token").equals("")) {
+                return ResponseEntity.status(HttpStatusCode.valueOf(401)).body(response);
             } else {
-                return ResponseEntity.ok(map);
+                return ResponseEntity.ok(response);
             }
         } else {
-            map.put("token", "");
-            return ResponseEntity.status(HttpStatusCode.valueOf(401)).body(map);
+            response.put("responseCode", "02");
+            response.put("message", "Input empty.");
+            response.put("data", "");
+            return ResponseEntity.status(HttpStatusCode.valueOf(401)).body(response);
         }
     }
 

@@ -50,18 +50,18 @@ public class UserService{
         } else return false;
     }
 
-    public boolean insertUser(InsertRequest insertRequest) {
+    public int insertUser(InsertRequest insertRequest) {
         if (userRepository.countByUsername(insertRequest.getUsername()) > 0) {
-            return false;
+            return -1;
         } else {
             if (saveUser(new User(null, insertRequest.getUsername(), insertRequest.getPassword(), insertRequest.getAddress())) != null) {
                 setRole(insertRequest.getUsername(), roleRepository.findById(insertRequest.getRoleId()).orElseThrow().getName());
-                return true;
-            } else return false;
+                return 1;
+            } else return 0;
         }
     }
 
-    public boolean updateUser(UpdateRequest updateRequest) {
+    public int updateUser(UpdateRequest updateRequest) {
         if (userRepository.findById(updateRequest.getId()).isPresent()) {
             User user = userRepository.findById(updateRequest.getId()).get();
             //user.setActive(updateRequest.getIsActive() != 0);
@@ -72,9 +72,9 @@ public class UserService{
             User userSave = saveUser(user);
             if (userSave != null) {
                 setRole(updateRequest.getUsername(), roleRepository.findById(updateRequest.getRole()).orElseThrow().getName());
-                return true;
-            } else return false;
-        } else return false;
+                return 1;
+            } else return 0;
+        } else return -1;
     }
 
     public User getUserById(Long id) {

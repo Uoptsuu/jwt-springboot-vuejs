@@ -1,11 +1,13 @@
 package com.jwt.jwt.controller;
 
+import com.jwt.jwt.entity.Role;
 import com.jwt.jwt.entity.User;
 import com.jwt.jwt.model.DTO.UserDTO;
 import com.jwt.jwt.model.request.InsertRequest;
 import com.jwt.jwt.model.request.UpdateRequest;
 import com.jwt.jwt.service.RoleService;
 import com.jwt.jwt.service.UserService;
+import com.jwt.jwt.service.ValidationInput;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatusCode;
@@ -24,75 +26,148 @@ public class AdminController {
 
     private final UserService userService;
     private final RoleService roleService;
-    @GetMapping("/home")
+    @GetMapping("/get-users")
     public ResponseEntity<Object> homePage(@RequestParam(name = "key", required = false, defaultValue = "") String key) {
-        List<User> userList = new ArrayList<>();
+        List<User> listUser;
+        HashMap<String, Object> response = new HashMap<>();
+        HashMap<String, Object> data = new HashMap<>();
         if (key.equals("")) {
-            userList =  userService.getAllUser();
+            listUser =  userService.getAllUser();
         } else {
-            userList = userService.getAllUserByKey(key);
+            listUser = userService.getAllUserByKey(key);
         }
-        List<UserDTO> userDTOList = new ArrayList<>();
-        for (User user : userList) {
-            userDTOList.add(new UserDTO().toUserDTO(user));
+        if (listUser == null) {
+            response.put("responseCode", "03");
+            response.put("message", "Empty.");
+        } else {
+            List<UserDTO> listUserDTO = new ArrayList<>();
+            for (User user : listUser) {
+                listUserDTO.add(new UserDTO().toUserDTO(user));
+            }
+            data.put("listUser", listUserDTO);
+            response.put("message", "Success.");
+            response.put("responseCode", "00");
         }
-        return ResponseEntity.ok(userDTOList);
+        response.put("data", data);
+        return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/delete/{user_id}")
+    @DeleteMapping("/delete-user/{user_id}")
     public ResponseEntity<Object> deleteUser(@PathVariable("user_id") Long userId) {
-        HashMap<String, String> map = new HashMap<>();
+        HashMap<String, Object> response = new HashMap<>();
+        HashMap<String, Object> data = new HashMap<>();
         if (userService.deleteUser(userId)) {
-            map.put("message", "Delete success.");
-            return ResponseEntity.ok(map);
+            response.put("message", "Delete success.");
+            response.put("responseCode", "00");
         } else {
-            map.put("message", "Delete fail.");
-            return ResponseEntity.status(HttpStatusCode.valueOf(404)).body(map);
+            response.put("message", "User does not exist fail.");
+            response.put("responseCode", "05");
         }
+        response.put("data",data);
+        return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/update/{user_id}")
+    @GetMapping("/get-user/{user_id}")
     public ResponseEntity<Object> updatePage(@PathVariable("user_id") Long id){
-        HashMap<String, Object> map = new HashMap<>();
+        HashMap<String, Object> response = new HashMap<>();
+        HashMap<String, Object> data = new HashMap<>();
         User user = userService.getUserById(id);
         if (user != null) {
-            map.put("user", new UserDTO().toUserDTO(user));
-            map.put("listRole", roleService.getAllRole());
-            return ResponseEntity.ok(map);
+            data.put("user",new UserDTO().toUserDTO(user));
+            response.put("message", "Success.");
+            response.put("responseCode", "00");
         } else {
-            map.put("user", null);
-            return ResponseEntity.status(HttpStatusCode.valueOf(404)).body(map);
+            response.put("message", "Not exist.");
+            response.put("responseCode", "05");
         }
+        response.put("data",data);
+        return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/insert")
+    @GetMapping("/get-roles")
     public ResponseEntity<Object> insertPage(){
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("listRole", roleService.getAllRole());
-        return ResponseEntity.ok(map);
+        HashMap<String, Object> response = new HashMap<>();
+        HashMap<String, Object> data = new HashMap<>();
+        List<Role> listRole = roleService.getAllRole();
+        if (listRole == null) {
+            response.put("responseCode", "03");
+            response.put("message", "Empty.");
+        } else {
+            response.put("responseCode", "00");
+            response.put("message", "Success.");
+        }
+        data.put("listRole", listRole);
+        response.put("data",data);
+        return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/insert")
+    @PostMapping("/insert-user")
     public ResponseEntity<Object> insertUser(@RequestBody InsertRequest insertRequest){
-        HashMap<String, String> map = new HashMap<>();
-        if (userService.insertUser(insertRequest)) {
-            map.put("message", "Insert success.");
-            return ResponseEntity.ok(map);
+        HashMap<String, Object> response = new HashMap<>();
+        HashMap<String, Object> data = new HashMap<>();
+        ValidationInput validate = new ValidationInput();
+        if (insertRequest.getUsername() != null && insertRequest.getPassword() != null && insertRequest.getAddress() != null && insertRequest.getRoleId() != null && !insertRequest.getUsername().equals("") && !insertRequest.getPassword().equals("") && !insertRequest.getAddress().equals("")) {
+            if (validate.validatePassword(insertRequest.getPassword()) && !validate.validateUsername(insertRequest.getUsername()) && insertRequest.getUsername().length() > 8 && insertRequest.getPassword().length() > 8) {
+                if (roleService.getRoleById(insertRequest.getRoleId()) != null) {
+                    int result = userService.insertUser(insertRequest);
+                    if (result == 1) {
+                        response.put("message", "Insert success.");
+                        response.put("responseCode", "00");
+                    } else if (result == -1) {
+                        response.put("message", "User exists.");
+                        response.put("responseCode", "04");
+                    } else {
+                        response.put("message", "User fail.");
+                        response.put("responseCode", "99");
+                    }
+                } else {
+                    response.put("message", "Role does not exist.");
+                    response.put("responseCode", "09");
+                }
+            } else {
+                response.put("message", "Username or password invalid.");
+                response.put("responseCode", "01");
+            }
         } else {
-            map.put("message", "Insert fail.");
-            return ResponseEntity.status(HttpStatusCode.valueOf(404)).body(map);
+            response.put("message", "Input empty.");
+            response.put("responseCode", "02");
         }
+        response.put("data",data);
+        return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/update")
+    @PutMapping("/update-user")
     public ResponseEntity<Object> updateUser(@RequestBody UpdateRequest updateRequest){
-        HashMap<String, String> map = new HashMap<>();
-        if (userService.updateUser(updateRequest)) {
-            map.put("message", "Update success.");
-            return ResponseEntity.ok(map);
-        } else {
-            map.put("message", "Update fail.");
-            return ResponseEntity.status(HttpStatusCode.valueOf(404)).body(map);
+        HashMap<String, Object> response = new HashMap<>();
+        HashMap<String, Object> data = new HashMap<>();
+        ValidationInput validate = new ValidationInput();
+        if (updateRequest.getUsername() != null && updateRequest.getAddress() != null && updateRequest.getRole() != null && !updateRequest.getUsername().equals("")  && !updateRequest.getAddress().equals("")) {
+            if (!validate.validateUsername(updateRequest.getUsername()) && updateRequest.getUsername().length() > 8) {
+                if (roleService.getRoleById(updateRequest.getRole()) != null) {
+                    int result = userService.updateUser(updateRequest);
+                    if (result == 1) {
+                        response.put("message", "Update success.");
+                        response.put("responseCode", "00");
+                    } else if (result == 0) {
+                        response.put("message", "Update fail.");
+                        response.put("responseCode", "99");
+                    } else {
+                        response.put("message", "User does not exist.");
+                        response.put("responseCode", "05");
+                    }
+                } else {
+                    response.put("message", "Role does not exist.");
+                    response.put("responseCode", "09");
+                }
+            } else {
+                response.put("message", "Username invalid.");
+                response.put("responseCode", "01");
+            }
+        }  else {
+            response.put("message", "Input empty.");
+            response.put("responseCode", "02");
         }
-    }
+            response.put("data",data);
+            return ResponseEntity.ok(response);
+        }
 }

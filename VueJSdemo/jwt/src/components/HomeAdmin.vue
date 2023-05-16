@@ -38,7 +38,7 @@
                     <td>
                         <a :href="'/admin/update/' + user.id">Update</a>
                         |
-                        <a href="" @click="deleteUser(user.id)">Delete</a>
+                        <a href="" @click.prevent="deleteUser(user.id)">Delete</a>
                     </td>
                 </tr>
             </tbody>
@@ -69,8 +69,10 @@
                 if (confirm("Are you sure you want to delete?")) {
                     UserService.delete(id).then(() => {
                         alert("Deleted.");
+                        location.reload();
                     })
                     .catch((err) => {alert("Không thể xoá. Error: " + err + ".");});
+                    
                     this.getUsers();
                 }
             },
