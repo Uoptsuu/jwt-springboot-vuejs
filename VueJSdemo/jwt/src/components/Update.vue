@@ -58,7 +58,7 @@
         methods: {
             checkUpdate(){
                 let msg = "";
-                if (UserService.checkSpecialChar(this.User.username + this.User.address + this.User.id + this.User.role + this.User.active)){
+                if (UserService.checkSpecialChar(this.User.username + this.User.id + this.User.role + this.User.active)){
                     msg += "không được chứa các ký tự đặc biệt";
                 } 
                 if (this.User.address == "" || this.User.username == "" || this.User.id == "") {
@@ -69,10 +69,13 @@
                 return msg;
             },
             setData(){
-                UserService.getDataForUpdate(this.$route.params.id).then((res => {
+                UserService.getUser(this.$route.params.id).then((res => {
                     //console.log(res);
-                    this.Roles = res.data.listRole;
-                    this.User = res.data.user;
+                    this.User = res.data.data.user;
+                }))
+                UserService.getRoles().then((res => {
+                    //console.log(res);
+                    this.Roles = res.data.data.listRole;
                 }))
             },
             update(){
@@ -80,10 +83,12 @@
                     //console.log(this.User);
                     //console.log(this.checkUpdate());
                     UserService.update(this.User) 
-                    .then(() => {
-                        sessionStorage.setItem('change',true);
-                        sessionStorage.setItem('msg','Thành công!');
-                        this.$router.push('/admin');
+                    .then((res) => {
+                        if (res.data.responseCode == "00") {
+                            sessionStorage.setItem('change',true);
+                            sessionStorage.setItem('msg','Thành công!');
+                            this.$router.push('/admin');
+                        } else alert(res.data.message);
                     })
                     .catch((err) => {
                         this.display = 'block';

@@ -36,31 +36,33 @@
         methods: {
             login() {
                 if (this.User.password != '' && this.User.username != '') {
-                    if (!UserService.checkSpecialChar(this.User.password)) {
+                    if (!UserService.checkSpecialChar(this.User.username)) {
                         UserService.login(this.User) 
                         .then((res) => {
-                            if(res.data.token != null && res.data.token != "") {
+                            console.log(res.data);
+                            console.log(res.data.data.token);                          
+                            if(res.data.responseCode == "00" && res.data.data.token != null && res.data.data.token != "") {
                                 window.sessionStorage.clear();
-                                window.sessionStorage.setItem("jwtToken", res.data.token);
-                                window.sessionStorage.setItem("role", res.data.role);
-                                axios.defaults.headers.Authorization = `Bearer ${res.data.token}`;
-                                if(res.data.role == "ROLE_ADMIN") {
+                                window.sessionStorage.setItem("jwtToken", res.data.data.token);
+                                window.sessionStorage.setItem("role", res.data.data.role);
+                                axios.defaults.headers.Authorization = `Bearer ${res.data.data.token}`;
+                                if(res.data.data.role == "ROLE_ADMIN") {
                                     this.$router.push("/admin");
-                                } else if(res.data.role == "ROLE_USER") {
+                                } else if(res.data.data.role == "ROLE_USER") {
                                     this.$router.push("/user");
                                 }
                             }
                         })
                         .catch((err) => {
                             this.display = 'block';
-                            this.message = "Thông tin không tồn tại.";})
+                            this.message = "Có lỗi xảy ra. Chi tiết lỗi: " + err;})
                     } else {
                         this.display = 'block';
-                        this.message = "Thông tin không được chứa các ký tự đặc biệt.";
+                        this.message = "Tài khoản không đúng định dạng.";
                     }
                 } else {
                     this.display = 'block';
-                    this.message = "Thông tin trống.";
+                    this.message = "Thông tin trống, vui lòng nhập đầy đủ thông tin";
                 }
             },
             checkLogin() {

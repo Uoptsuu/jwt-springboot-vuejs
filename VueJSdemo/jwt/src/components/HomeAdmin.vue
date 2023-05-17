@@ -62,18 +62,17 @@
         methods: {
             getUsers(){
                 UserService.getUsers().then((res => {
-                    this.Users = res.data;
+                    console.log(res)
+                    this.Users = res.data.data.listUser;
                 }))
             },
             deleteUser(id){
                 if (confirm("Are you sure you want to delete?")) {
                     UserService.delete(id).then(() => {
                         alert("Deleted.");
-                        location.reload();
+                        this.getUsers();
                     })
                     .catch((err) => {alert("Không thể xoá. Error: " + err + ".");});
-                    
-                    this.getUsers();
                 }
             },
             search(){
@@ -81,7 +80,7 @@
                     alert("Thông tin tìm kiếm không hợp lệ!");
                 } else {
                     UserService.search(this.key).then((res => {
-                        this.Users = res.data;
+                        this.Users = res.data.data.listUser;
                     }))
                 }
             }
@@ -95,8 +94,6 @@
                 this.message = sessionStorage.getItem('msg');
                 sessionStorage.removeItem('change');
             } 
-
-
             this.getUsers();
         }
     }

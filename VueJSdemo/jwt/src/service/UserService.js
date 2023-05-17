@@ -10,25 +10,25 @@ class UserService{
         return axios.get(`/user/home`)
     }
     search(key) {
-        return axios.get(`/admin/home?key=${key}`)
+        return axios.get(`/admin/get-users?key=${key}`)
     }
     getUsers(){
-        return axios.get(`/admin/home`)
+        return axios.get(`/admin/get-users`)
     }
-    getDataForUpdate(user_id) {
-        return axios.get(`/admin/update/${user_id}`)
+    getUser(userId) {
+        return axios.get(`/admin/get-user/${userId}`)
     }
-    getRoleForInsert() {
-        return axios.get(`/admin/insert`)
+    getRoles() {
+        return axios.get(`/admin/get-roles`)
     }
     insert(insertRequest) {
-        return axios.post(`/admin/insert`, insertRequest)
+        return axios.post(`/admin/insert-user`, insertRequest)
     }
     update(updateRequest) {
-        return axios.put(`/admin/update`, updateRequest)
+        return axios.put(`/admin/update-user`, updateRequest)
     }
-    delete(user_id) {
-        return axios.delete(`/admin/delete/${user_id}`)
+    delete(userId) {
+        return axios.delete(`/admin/delete-user/${userId}`)
     }
     checkSpecialChar(input){
         const format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;

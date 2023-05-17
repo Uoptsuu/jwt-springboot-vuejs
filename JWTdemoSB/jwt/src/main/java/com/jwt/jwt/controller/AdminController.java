@@ -52,8 +52,8 @@ public class AdminController {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/delete-user/{user_id}")
-    public ResponseEntity<Object> deleteUser(@PathVariable("user_id") Long userId) {
+    @DeleteMapping("/delete-user/{userId}")
+    public ResponseEntity<Object> deleteUser(@PathVariable("userId") Long userId) {
         HashMap<String, Object> response = new HashMap<>();
         HashMap<String, Object> data = new HashMap<>();
         if (userService.deleteUser(userId)) {
@@ -67,8 +67,8 @@ public class AdminController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/get-user/{user_id}")
-    public ResponseEntity<Object> updatePage(@PathVariable("user_id") Long id){
+    @GetMapping("/get-user/{userId}")
+    public ResponseEntity<Object> updatePage(@PathVariable("userId") Long id){
         HashMap<String, Object> response = new HashMap<>();
         HashMap<String, Object> data = new HashMap<>();
         User user = userService.getUserById(id);
